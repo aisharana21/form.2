@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+</head>
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        height: auto;
+
+
+
+    }
+
+    form {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        height: auto;
+        padding: 5px;
+        box-shadow: 5px 5px 15px 5px rgb(148, 148, 148);
+        background-color: rgb(230, 230, 229);
+
+    }
+
+    .input-container {
+        height: 95px;
+        position: relative;
+    }
+
+    .input-box {
+        width: 400px;
+        padding: 10px;
+        margin: 10px;
+        border: 1px solid beige;
+        border-radius: 5px;
+        background-color: rgb(252, 251, 251);
+    }
+
+
+
+    label {
+        /* margin: 10px; */
+        /* color: rgb(170, 168, 168); */
+        display: block;
+        font-size: 12px;
+        font-weight: bold;
+        margin-left: 10px;
+
+    }
+
+    .btn {
+        margin-left: 5px;
+        width: 100px;
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background-color: rgb(219, 192, 219);
+        cursor: pointer;
+    }
+
+    i {
+        position: absolute;
+        top: 45%;
+        right: 25px;
+        transform: translateY(-50%);
+        cursor: pointer
+    }
+
+
+    div>p {
+        margin: 0;
+        margin-left: 10px;
+        font-size: 10px;
+    }
+
+    @media only screen and (max-width:400px) {
+        .container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .input-container {
+            width: 100%;
+            height: 100px;
+        }
+
+
+        input {
+            width: 80%;
+        }
+    }
+/* classes to add on borders */
+    .pass {
+        border: 1px solid green;
+    }
+
+    .err {
+        border: 1px solid red;
+    }
+</style>
+
+<body>
+<!-- main container -->
+    <div class="container">
+
+        <form method="POST">
+            <h1>Registration Form</h1>
+
+            <div class="input-container">
+                <label for="name">Full Name</label>
+                <input class="input-box name" type="text" name="name" required placeholder="Eishal Amir">
+                <p class="name-error"></p>
+            </div>
+            <div class="input-container">
+                <label for="email">Email</label>
+                <input class="input-box email" type="email" name="email" required placeholder="example@site.com">
+                <p class="email-error"></p>
+            </div>
+            <div class="input-container">
+                <label for="password">Password</label>
+                <!-- used event listener  -->
+                <input onkeyup="passStrength();" class="input-box password" type="password" placeholder="a@4vv^4s"
+                    name="password" minlength="8" maxlength="10" required
+                    title="password must contain special charachters, alphabets,numbers">
+                <i class="eye  fas fa-eye"></i>
+                <p class="error"></p>
+
+
+            </div>
+            <div class="input-container">
+                <label for="date">Birth Date</label>
+                <input class="input-box" type="date" name="date">
+            </div>
+
+
+            <button onclick="validate(); nameValidation();" class="btn">Submit</button>
+
+        </form>
+    </div>
+
+    <script>
+        // to see password
+
+        let btn = document.querySelector(".eye");
+        btn.addEventListener("click", () => {
+            let password = document.querySelector(".password");
+            if (password.type === 'password') {
+                password.type = 'text';
+            }
+            else {
+                password.type = 'password'
+            }
+        })
+        // function showPassword() {
+        //    let password = document.querySelector(".password");
+        //     if (password.type === 'password') {
+        //         password.type = 'text';
+        //     }
+        //     else {
+        //         password.type = 'password'
+        //     }
+        // }
+        // password
+        // to find password strength
+        function passStrength() {
+
+            let strength = 0;
+            let weak = 5;
+            let strong = 10;
+            let medium = 6
+// var input has password
+            let input = document.querySelector(".password").value;
+            // to add or remove class
+            let border = document.querySelector(".password");
+            border.classList.remove("pass", "err");
+            if (input.length == 0) {
+                document.querySelector(".error").innerHTML = "Enter Password";
+                border.classList.add("err");
+
+                return;
+
+            }
+            // if user typed less words than 8
+            if (input.length < 8 && input.length != 0) {
+                document.querySelector(".error").innerHTML = "Password should atleast of 8 charachters";
+                document.querySelector(".error").style.color = "red";
+                border.classList.add("err");
+                return
+
+            }
+            //used test to return true to know if the alpha,numeric,and special char exist
+            if (/[a-z]/.test(input)) {
+                strength++;
+            }
+            if (/[A-Z]/.test(input)) {
+                strength += 2;
+            }
+            if (/[0-9]/.test(input)) {
+                strength += 3
+            }
+            if (/[#&@^+!]/.test(input)) {
+                strength += 4;
+            }
+
+
+            if (strength === strong) {
+                document.querySelector(".error").innerHTML = "Password is strong";
+                document.querySelector(".error").style.color = "green";
+                border.classList.add("pass");
+
+
+            }
+            else if (strength <= weak && strength != 0) {
+                document.querySelector(".error").innerHTML = "Password is weak";
+                document.querySelector(".error").style.color = "red";
+                border.classList.add("err");
+
+
+
+
+            }
+            else if (strength > weak && strength < strong) {
+                document.querySelector(".error").innerHTML = "Password is medium";
+                document.querySelector(".error").style.color = "orange";
+
+
+
+            }
+        }
+        // eamil validation
+        function validate() {
+            let email = document.querySelector(".email").value;
+            let border = document.querySelector(".email");
+                        border.classList.remove("err","pass");
+
+            if (email === "") {
+                document.querySelector(".email-error").innerHTML = "Enter Email";
+                document.querySelector(".email-error").style.color = "red"
+                border.classList.add("err");
+
+
+
+            }
+
+            else if (!email.includes("@") || !email.includes(".")) {
+                document.querySelector(".email-error").innerHTML = "Invalid Email";
+                document.querySelector(".email-error").style.color = "red"
+                border.classList.add("err");
+
+
+            }
+            else {
+                document.querySelector(".email-error").innerHTML = "";
+                border.classList.add("pass");
+
+            }
+        }
+        // NAME VALIDATION
+        function nameValidation() {
+            let border = document.querySelector(".name");
+            let name = document.querySelector(".name").value;
+            border.classList.remove("err","pass");
+            if (name === "") {
+                document.querySelector(".name-error").innerHTML = "Enter Your Full name"
+                document.querySelector(".name-error").style.color = "red"
+                border.classList.add("err");
+            }
+            else {
+                document.querySelector(".name-error").innerHTML = "";
+                border.classList.add("pass");
+
+
+            }
+        }
+
+    </script>
+</body>
+
+</html>
