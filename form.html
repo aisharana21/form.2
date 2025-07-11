@@ -102,7 +102,8 @@
             width: 80%;
         }
     }
-/* classes to add on borders */
+
+    /* classes to add on borders */
     .pass {
         border: 1px solid green;
     }
@@ -113,7 +114,7 @@
 </style>
 
 <body>
-<!-- main container -->
+    <!-- main container -->
     <div class="container">
 
         <form method="POST">
@@ -132,9 +133,8 @@
             <div class="input-container">
                 <label for="password">Password</label>
                 <!-- used event listener  -->
-                <input onkeyup="passStrength();" class="input-box password" type="password" placeholder="a@4vv^4s"
-                    name="password" minlength="8" maxlength="10" required
-                    title="password must contain special charachters, alphabets,numbers">
+                <input class="input-box password" type="password" placeholder="a@4vv^4s" name="password" minlength="8"
+                    maxlength="10" required title="password must contain special charachters, alphabets,numbers">
                 <i class="eye  fas fa-eye"></i>
                 <p class="error"></p>
 
@@ -146,7 +146,7 @@
             </div>
 
 
-            <button onclick="validate(); nameValidation();" class="btn">Submit</button>
+            <button onclick=" nameValidation();" class="btn">Submit</button>
 
         </form>
     </div>
@@ -164,24 +164,62 @@
                 password.type = 'password'
             }
         })
-        // function showPassword() {
-        //    let password = document.querySelector(".password");
-        //     if (password.type === 'password') {
-        //         password.type = 'text';
-        //     }
-        //     else {
-        //         password.type = 'password'
-        //     }
-        // }
+
+        //email
+        let emailSetIntervalId;
+        const email = document.querySelector(".email");
+        email.addEventListener('input', () => {
+            clearInterval(emailSetIntervalId);
+            emailSetIntervalId = setInterval(() => {
+                validate();
+
+            }, 2000);
+        });
+
+        // eamil validation
+        function validate() {
+            let emailInput = document.querySelector(".email");
+            let email = emailInput.value;
+            const message = document.querySelector(".email-error");
+            emailInput.classList.remove("err", "pass");
+
+            if (email === "") {
+                message.innerHTML = "Enter Email";
+                message.style.color = "red"
+                emailInput.classList.add("err");
+            }
+
+            else if (!email.includes("@") || !email.includes(".")) {
+                message.innerHTML = "Invalid Email";
+                message.style.color = "red"
+                emailInput.classList.add("err");
+
+
+            }
+            else {
+                document.querySelector(".email-error").innerHTML = "";
+                emailInput.classList.add("pass");
+            }
+        }
         // password
         // to find password strength
+        let passwordSetIntervalId;
+        document.querySelector(".password")
+            .addEventListener('input', () => {
+                clearInterval(passwordSetIntervalId);
+                passwordSetIntervalId = setInterval(() => {
+                    passStrength();
+                }, 2000);
+
+            });
+
         function passStrength() {
 
             let strength = 0;
             let weak = 5;
             let strong = 10;
             let medium = 6
-// var input has password
+            // var input has password
             let input = document.querySelector(".password").value;
             // to add or remove class
             let border = document.querySelector(".password");
@@ -191,15 +229,13 @@
                 border.classList.add("err");
 
                 return;
-
             }
             // if user typed less words than 8
             if (input.length < 8 && input.length != 0) {
                 document.querySelector(".error").innerHTML = "Password should atleast of 8 charachters";
                 document.querySelector(".error").style.color = "red";
                 border.classList.add("err");
-                return
-
+                return;
             }
             //used test to return true to know if the alpha,numeric,and special char exist
             if (/[a-z]/.test(input)) {
@@ -215,7 +251,6 @@
                 strength += 4;
             }
 
-
             if (strength === strong) {
                 document.querySelector(".error").innerHTML = "Password is strong";
                 document.querySelector(".error").style.color = "green";
@@ -227,61 +262,28 @@
                 document.querySelector(".error").innerHTML = "Password is weak";
                 document.querySelector(".error").style.color = "red";
                 border.classList.add("err");
-
-
-
-
             }
             else if (strength > weak && strength < strong) {
                 document.querySelector(".error").innerHTML = "Password is medium";
                 document.querySelector(".error").style.color = "orange";
 
-
-
             }
         }
-        // eamil validation
-        function validate() {
-            let email = document.querySelector(".email").value;
-            let border = document.querySelector(".email");
-                        border.classList.remove("err","pass");
 
-            if (email === "") {
-                document.querySelector(".email-error").innerHTML = "Enter Email";
-                document.querySelector(".email-error").style.color = "red"
-                border.classList.add("err");
-
-
-
-            }
-
-            else if (!email.includes("@") || !email.includes(".")) {
-                document.querySelector(".email-error").innerHTML = "Invalid Email";
-                document.querySelector(".email-error").style.color = "red"
-                border.classList.add("err");
-
-
-            }
-            else {
-                document.querySelector(".email-error").innerHTML = "";
-                border.classList.add("pass");
-
-            }
-        }
         // NAME VALIDATION
         function nameValidation() {
-            let border = document.querySelector(".name");
-            let name = document.querySelector(".name").value;
-            border.classList.remove("err","pass");
+            let nameInput = document.querySelector(".name");
+            let name = nameInput.value;
+            const nameErrorMessage = document.querySelector(".name-error");
+            border.classList.remove("err", "pass");
             if (name === "") {
-                document.querySelector(".name-error").innerHTML = "Enter Your Full name"
-                document.querySelector(".name-error").style.color = "red"
-                border.classList.add("err");
+                nameErrorMessage.innerHTML = "Enter Your Full name"
+                nameErrorMessage.style.color = "red"
+                nameInput.classList.add("err");
             }
             else {
-                document.querySelector(".name-error").innerHTML = "";
-                border.classList.add("pass");
-
+                nameErrorMessage.innerHTML = "";
+                nameInput.classList.add("pass");
 
             }
         }
