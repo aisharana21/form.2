@@ -275,7 +275,7 @@
             let nameInput = document.querySelector(".name");
             let name = nameInput.value;
             const nameErrorMessage = document.querySelector(".name-error");
-            border.classList.remove("err", "pass");
+            nameInput.classList.remove("err", "pass");
             if (name === "") {
                 nameErrorMessage.innerHTML = "Enter Your Full name"
                 nameErrorMessage.style.color = "red"
